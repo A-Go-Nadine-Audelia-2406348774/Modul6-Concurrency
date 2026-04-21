@@ -1,0 +1,5 @@
+Nama = Go Nadine Audelia
+NPM = 2406348774
+
+REFLEKSI MILESTONE 1
+Saya mempelajari bagaimana server memproses HTTP request dari browser menggunakan TcpStream. Fungsi handle_connection memanfaatkan BufReader untuk membaca aliran data secara lebih efisien karena data dibuffer terlebih dahulu. Aliran data tersebut kemudian dipecah menjadi baris-baris teks menggunakan .lines(). Karena proses pembacaan dari jaringan berpotensi mengalami error, .map(|result| result.unwrap()) digunakan untuk mengekstrak nilai teks aslinya. Sebuah HTTP request dari browser selalu diakhiri dengan baris kosong berturut-turut sehingga metode .take_while(|line| !line.is_empty()) diterapkan untuk menghentikan pembacaan tepat saat mencapai akhir dari header request. Terakhir, seluruh baris yang telah dibaca dikumpulkan menjadi sebuah struktur data bernama http_request menggunakan .collect() yang berfungsi untuk mencetak detail request tersebut ke terminal.
