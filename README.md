@@ -17,3 +17,6 @@ Saya mencoba slow response dan mengobservasi kelemahan utama dari arsitektur sin
 
 ## COMMIT 5 REFLECTION
 Saya mengimplementasikan ThreadPool untuk mengubah server dari singlethreaded menjadi multithreaded. Arsitektur ini menggunakan sejumlah worker threads yang dibuat untuk menangani permintaan secara paralel. Saya menggunakan mpsc::channel untuk mengirimkan tugas dari thread utama ke para worker. Agar receiver dapat digunakan oleh banyak thread secara aman maka saya membungkusnya dengan Arc Mutex yang menjamin hanya satu worker yang mengambil tugas pada satu waktu. Dengan sistem ini, server kini dapat memproses permintaan yang memakan waktu lama atau /sleep tanpa menghentikan permintaan lainnya yang masuk.
+
+## COMMIT BONUS REFLECTION
+Saya mempelajari cara mengimplementasikan fungsi build sebagai alternatif yang lebih aman dibandingkan fungsi new untuk menginisialisasi ThreadPool. Perbedaan utamanya terletak pada strategi penanganan error. Fungsi new biasanya menggunakan assert! yang akan menghentikan program secara mendadak jika input tidak valid. Sedangkan, fungsi build dirancang untuk mengembalikan tipe data result. Pendekatan ini memungkinkan sistem menangkap kegagalan inisialisasi dan mengambil tindakan pencegahan tanpa menyebabkan seluruh server mati. 
