@@ -11,3 +11,6 @@ Saya mempelajari cara mengembalikan respons berupa file HTML dari server ke brow
 ## COMMIT 3 REFLECTION
 ![Commit 3 screen capture](/assets/images/commit3.png)
 Saya memodifikasi server agar dapat memvalidasi request dan memberikan respons yang spesifik. Cara kerjanya adalah dengan memeriksa request line dan jika sesuai dengan rute utama, maka server menetapkan status 200 OK dan memuat hello.html. Namun jika rute tidak dikenali, maka server menetapkan status 404 Not Found dan memuat 404.html. Dalam proses ini saya melakukan refactoring dengan mengekstrak variabel status_line dan filename di bagian if-else. Refactoring ini dilakukan untuk menghindari duplikasi kode.
+
+## COMMIT 4 REFLECTION
+Saya mencoba slow response dan mengobservasi kelemahan utama dari arsitektur single-threaded. Dengan menambahkan rute /sleep yang menahan eksekusi selama 10 detik, saya melihat bahwa request lain di tab berbeda harus ikut menunggu hingga proses di tab pertama selesai. Hal ini terjadi karena server hanya memiliki satu jalur thread. Ketika hanya ada satu jalur thread maka akan menyebabkan satu request yang memakan waktu lama akan memblokir seluruh koneksi lain yang masuk. Hal ini membuktikan bahwa single-threaded server sangat tidak efisien dan rentan mengalami bottleneck.
