@@ -14,3 +14,6 @@ Saya memodifikasi server agar dapat memvalidasi request dan memberikan respons y
 
 ## COMMIT 4 REFLECTION
 Saya mencoba slow response dan mengobservasi kelemahan utama dari arsitektur single-threaded. Dengan menambahkan rute /sleep yang menahan eksekusi selama 10 detik, saya melihat bahwa request lain di tab berbeda harus ikut menunggu hingga proses di tab pertama selesai. Hal ini terjadi karena server hanya memiliki satu jalur thread. Ketika hanya ada satu jalur thread maka akan menyebabkan satu request yang memakan waktu lama akan memblokir seluruh koneksi lain yang masuk. Hal ini membuktikan bahwa single-threaded server sangat tidak efisien dan rentan mengalami bottleneck.
+
+## COMMIT 5 REFLECTION
+Saya mengimplementasikan ThreadPool untuk mengubah server dari singlethreaded menjadi multithreaded. Arsitektur ini menggunakan sejumlah worker threads yang dibuat untuk menangani permintaan secara paralel. Saya menggunakan mpsc::channel untuk mengirimkan tugas dari thread utama ke para worker. Agar receiver dapat digunakan oleh banyak thread secara aman maka saya membungkusnya dengan Arc Mutex yang menjamin hanya satu worker yang mengambil tugas pada satu waktu. Dengan sistem ini, server kini dapat memproses permintaan yang memakan waktu lama atau /sleep tanpa menghentikan permintaan lainnya yang masuk.
